@@ -10,9 +10,10 @@ A hands-on lab demonstrating ESXi hypervisor deployment, virtual machine provisi
 |---|---|
 | Hypervisor | VMware ESXi 8.0 Update 3 |
 | Host CPU | AMD Ryzen AI 9 365 |
-| Host RAM | 4 GB allocated |
-| Datastore | VMFS6 — 13.75 GB |
+| Host RAM | 8 GB allocated |
 | Host IP | 192.168.10.41 (bridged to LAN) |
+| Datastore 1 | datastore1 — VMFS6, 13.75GB (ESXi system partition) |
+| Datastore 2 | datastore2 — VMFS6, 100GB (VM storage — secondary virtual disk) |
 | Host OS | Nobara Linux (VMware Workstation) |
 
 ---
@@ -45,6 +46,13 @@ Two VMs were provisioned and installed in parallel on datastore2 (100GB secondar
 - Account: Kudzayi Chimbodza
 - VMware Tools installed
 
+### 3. Network Verification
+- Guest VM obtained DHCP lease from local router
+- Verified connectivity: `ping 192.168.10.1` (gateway) and `ping 8.8.8.8` (external)
+- Confirmed DNS resolution working
+
+---
+
 ## Screenshots
 
 | # | Screenshot | Description |
@@ -66,7 +74,7 @@ Two VMs were provisioned and installed in parallel on datastore2 (100GB secondar
 
 ---
 
-## Skills Mapped to Industry Standards
+## Skills Mapped to industry standards
 
 | Industry Requirement | Demonstrated Here |
 |---|---|
@@ -82,5 +90,6 @@ Two VMs were provisioned and installed in parallel on datastore2 (100GB secondar
 
 This lab is part of a broader homelab documented at [myviewsontech.com](https://myviewsontech.com), which includes:
 
+- MQTT broker with TLS (Mosquitto)
 - Alta Labs managed networking (R10 router, AP6 access point)
 - ZimaOS NAS with 4x NVMe RAID 5
