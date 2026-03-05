@@ -46,21 +46,27 @@ Two VMs were provisioned and installed in parallel on datastore2 (100GB secondar
 - Account: Kudzayi Chimbodza
 - VMware Tools installed
 
-### 3. Network Verification
-- Guest VM obtained DHCP lease from local router
-- Verified connectivity: `ping 192.168.10.1` (gateway) and `ping 8.8.8.8` (external)
-- Confirmed DNS resolution working
+### 3. Network Configuration
+- Both VMs connected to VM Network port group on vSwitch0
+- ESXi management interface assigned DHCP lease from local router (192.168.10.41/24)
+- Verified ESXi reachability from host browser and other LAN devices
+- Guest VM network adapters configured and connected at power-on
 
 ---
 
 ## Screenshots
 
-| # | Screenshot | Description |
-|---|---|---|
-| 1 | `screenshots/01-esxi-console-boot.png` | ESXi 8.0 U3 boot screen in VMware Workstation — IP assigned, 8GB RAM, Ryzen AI 9 365 |
-| 2 | `screenshots/02-esxi-web-dashboard.png` | ESXi web UI dashboard logged in as kudzayi — hardware, storage, and networking summary |
-| 3 | `screenshots/03-dual-vm-parallel-install.png` | Windows Server 2022 and RHEL 10.1 installing simultaneously — ESXi dashboard visible in background, CPU and memory under real load |
-| 4 | `screenshots/04-both-vms-running.png` | Both VMs fully booted — Windows Server 2022 showing Kudzayi Chimbodza account, RHEL 10.1 (Coughlan) showing Linux 6.12 kernel and VMware virtualization confirmed |
+| # | Description |
+|---|---|
+| 1 | ESXi 8.0 U3 boot screen in VMware Workstation — IP assigned, 8GB RAM, Ryzen AI 9 365 |
+| 2 | ESXi web UI dashboard logged in as kudzayi — hardware, storage, and networking summary |
+| 3 | Windows Server 2022 and RHEL 10.1 installing simultaneously — ESXi dashboard visible in background, CPU and memory under real load |
+| 4 | Both VMs fully booted — Windows Server 2022 showing Kudzayi Chimbodza account, RHEL 10.1 (Coughlan) showing Linux 6.12 kernel and VMware virtualization confirmed |
+
+![ESXi console boot](screenshots/01-esxi-console-boot.png)
+![ESXi web dashboard](screenshots/02-esxi-web-dashboard.png)
+![Dual VM parallel install](screenshots/03-dual-vm-parallel-install.png)
+![Both VMs running](screenshots/04-both-vms-running.png)
 
 ---
 
@@ -71,17 +77,19 @@ Two VMs were provisioned and installed in parallel on datastore2 (100GB secondar
 - **Network topology** — bridged vs NAT mode, port groups, virtual switches (vSwitch)
 - **IP addressing** — DHCP lease acquisition, gateway connectivity, DNS resolution
 - **CIDR / subnetting** — host on /24 subnet (192.168.10.0/24), correct gateway config
+- **Storage management** — VMFS6 datastores, secondary disk provisioning, thin vs thick disk
 
 ---
 
-## Skills Mapped to industry standards
+## Skills Mapped to Industry Standards
 
 | Industry Requirement | Demonstrated Here |
 |---|---|
-| Build VMs using ESXi hypervisor | ✅ VM provisioned on ESXi 8.0 U3 |
+| Build VMs using ESXi hypervisor | ✅ Two VMs provisioned on ESXi 8.0 U3 |
 | Set up and maintain network topologies | ✅ Bridged network, vSwitch, VM Network port group |
-| Maintain Linux operating systems | ✅ Linux guest VM deployed and configured |
-| IP address / DNS / CIDR notation | ✅ DHCP, ping, DNS verification on 192.168.10.0/24 |
+| Maintain Linux operating systems | ✅ RHEL 10.1 deployed and running |
+| Maintain Windows operating systems | ✅ Windows Server 2022 deployed with VMware Tools |
+| IP address / DNS / CIDR notation | ✅ DHCP, gateway config on 192.168.10.0/24 |
 | Attention to detail | ✅ Documented each step with screenshots |
 
 ---
@@ -93,3 +101,8 @@ This lab is part of a broader homelab documented at [myviewsontech.com](https://
 - MQTT broker with TLS (Mosquitto)
 - Alta Labs managed networking (R10 router, AP6 access point)
 - ZimaOS NAS with 4x NVMe RAID 5
+
+---
+
+*Built by Kudzayi Chimbodza — MSc Cyber-Physical Systems, Northeastern University*  
+*GitHub: [github.com/kchimbodza](https://github.com/kchimbodza)*
