@@ -64,8 +64,11 @@ Two VMs were provisioned and installed in parallel on datastore2 (100GB secondar
 | 4 | Both VMs fully booted — Windows Server 2022 showing Kudzayi Chimbodza account, RHEL 10.1 (Coughlan) showing Linux 6.12 kernel and VMware virtualization confirmed |
 
 ![ESXi console boot](screenshots/01-esxi-console-boot.png)
+
 ![ESXi web dashboard](screenshots/02-esxi-web-dashboard.png)
+
 ![Dual VM parallel install](screenshots/03-dual-vm-parallel-install.png)
+
 ![Both VMs running](screenshots/04-both-vms-running.png)
 
 ---
