@@ -67,7 +67,7 @@ Two VMs were provisioned and installed in parallel on datastore2 (100GB secondar
 
 ![ESXi web dashboard](screenshots/02-esxi-web-dashboard.png)
 
-![Dual VM parallel install](screenshots/03-dual-vm-parallel-install.png)
+![Dual VM parallel install](screenshots/03-dual-parallel-install.png)
 
 ![Both VMs running](screenshots/04-both-vms-running.png)
 
