@@ -2,6 +2,47 @@
 
 A hands-on lab demonstrating ESXi hypervisor deployment, virtual machine provisioning, and network configuration — skills directly applicable to NPI lab environments.
 
+## Architecture
+
+<p align="center"><img src="docs/architecture.svg" width="100%" alt="A laptop running Nobara Linux and VMware Workstation hosts a nested ESXi 8.0 U3 VM (4 vCPU, 8 GB). Its adapter is bridged through vmnet0 to the physical NIC, so the ESXi management interface vmk0 gets 192.168.10.41 from the home router (192.168.10.1, DHCP and DNS) and any LAN browser can reach the Host Client. Inside ESXi, vSwitch0 and the VM Network port group connect RHEL 10.1 (2 vCPU, 2 GB, 10 GB) and Windows Server 2022 (2 vCPU, 4 GB, 54 GB). datastore1 (VMFS6, 13.75 GB) holds ESXi; datastore2 (VMFS6, 100 GB) holds the VM disks."></p>
+
+**Why this architecture**
+
+| Choice | Why |
+|---|---|
+| Nested ESXi inside VMware Workstation | The whole lab (hypervisor, two guests, storage) runs on one laptop. |
+| Bridged networking, not NAT | With NAT on Linux, ESXi fell back to a 172.x.x.x address the host browser could not reach. Bridged gives it a real 192.168.10.x address (details below). |
+| A second 100 GB virtual disk as datastore2 | datastore1 is the 13.75 GB ESXi system disk; the two guests need 64 GB of disk between them. |
+| Default vSwitch0 and "VM Network" port group | Both guests sit on the same bridged uplink and LAN as the host, which is all two VMs need. |
+| One Linux and one Windows guest | Covers both server OS families from the skills table below. |
+
+## Results
+
+All numbers are read from the ESXi Host Client in the screenshots below (4 March 2026).
+
+| Check | Result | Evidence |
+|---|---|---|
+| ESXi gets a LAN address and is managed from the browser | ✅ `https://192.168.10.41/` (DHCP), Host Client login works | Screenshots 1, 2 |
+| Two guests install at the same time on one 8 GB host | ✅ Host at 36% CPU (2.9 of 8 GHz), 61% memory (4.85 of 8 GB) mid-install | Screenshot 3 |
+| Both guests boot and run | ✅ "Power On VM" tasks completed successfully; RHEL 10.1 on kernel 6.12.0-124.8.1.el10, Windows Server 2022 at the desktop | Screenshots 2, 4 |
+| Host load with both guests running | 47% CPU (3.7 GHz), **94% memory (7.53 of 8 GB, 479 MB free)** | Screenshot 4 |
+| Storage | 76.99 of 113.5 GB used (68%); datastore2 has 34.17 GB free, datastore1 2.34 GB free | Screenshot 2 |
+
+No automated tests: this is a hands-on lab, so the evidence is the screenshots.
+
+## What worked and what didn't
+
+| | What | Detail |
+|---|---|---|
+| ✅ | Bridged networking | ESXi took a DHCP lease (192.168.10.41/24, gateway and DNS 192.168.10.1) and was reachable from any LAN device. |
+| ❌ → ✅ | NAT networking on Linux | ESXi ended up on an unreachable 172.x.x.x address. Fixed by switching to bridged mode. |
+| ✅ | Parallel installs | Windows Server 2022 and RHEL 10.1 installed side by side on the same host. |
+| ⚠️ | Memory is the limit | With both guests running, ESXi used 94% of its 8 GB. There is no room for a third VM without more RAM. |
+| ⚠️ | Small system datastore | datastore1 has 2.34 GB free, so all VM disks went on the second 100 GB disk. |
+| ⚠️ | Standalone host | Not connected to vCenter; the Host Client shows vMotion as "Not supported". |
+| ⚠️ | No GPU in the guest | RHEL's About page shows "Software Rendering" for graphics. |
+| ⚠️ | Built by hand | VMs were created in the Host Client; there are no scripts here (see [esxi-homelab-simulation](https://github.com/kchimbodza/esxi-homelab-simulation) for a scripted KVM version). |
+
 ---
 
 ## Environment
